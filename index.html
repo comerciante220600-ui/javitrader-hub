@@ -81,6 +81,8 @@
   .card-top{display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:22px;}
   .icon{width:44px; height:44px; border-radius:8px; background:var(--surface-2); display:flex; align-items:center; justify-content:center; color:var(--gold); font-size:23px; border:1px solid var(--line-gold);}
   .card.soon .icon{color:var(--txt-mute); border-color:var(--line);}
+  .icon.brand{background:#0d0d0d; border:1px solid var(--line); padding:6px;}
+  .icon.brand img{width:100%; height:100%; object-fit:contain; display:block;}
   .badge{font-size:10.5px; letter-spacing:1px; text-transform:uppercase; padding:5px 10px; border-radius:3px; display:flex; align-items:center; gap:6px; white-space:nowrap;}
   .badge.on{color:var(--green); background:rgba(95,157,120,0.12);}
   .badge.on .dot{width:6px; height:6px; border-radius:50%; background:var(--green);}
@@ -302,7 +304,7 @@
     <div class="grid" style="max-width:680px; margin:0 auto;">
       <a class="card live" href="https://bingxdao.com/partner/JaviTrade" target="_blank" rel="noopener">
         <div class="card-top">
-          <span class="icon"><i class="ti ti-building-bank"></i></span>
+          <span class="icon brand"><img src="bingx.svg" alt="BingX"></span>
           <span class="badge" style="color:var(--gold); background:rgba(184,147,87,0.14);">−20% comisiones</span>
         </div>
         <h3>BingX</h3>
@@ -316,7 +318,7 @@
       </a>
       <a class="card live" href="https://www.bitunix.com/register?vipCode=JaviTrader" target="_blank" rel="noopener">
         <div class="card-top">
-          <span class="icon"><i class="ti ti-building-bank"></i></span>
+          <span class="icon brand"><img src="bitunix.png" alt="Bitunix"></span>
           <span class="badge" style="color:var(--gold); background:rgba(184,147,87,0.14);">−20% comisiones</span>
         </div>
         <h3>Bitunix</h3>
