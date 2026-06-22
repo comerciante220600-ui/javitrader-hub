@@ -30,7 +30,8 @@
   header{position:sticky; top:0; z-index:10; background:var(--header-bg); backdrop-filter:blur(12px); border-bottom:1px solid var(--line);}
   .hrow{display:flex; align-items:center; justify-content:space-between; padding:17px 0;}
   .brand{display:flex; align-items:center; gap:11px;}
-  .brand-mark{width:30px; height:30px; border-radius:6px; background:var(--gold); display:flex; align-items:center; justify-content:center; color:var(--cta-text); font-size:18px;}
+  .brand-mark{width:30px; height:30px; border-radius:6px; overflow:hidden; display:block; flex-shrink:0; background:#000;}
+  .brand-mark img{width:152%; height:152%; margin:-26%; object-fit:contain; display:block;}
   .brand-name{font-size:16px; font-weight:600; letter-spacing:1px; text-transform:uppercase;}
   .brand-name span{color:var(--gold);}
   nav{display:flex; gap:30px; font-size:13.5px; color:var(--txt-dim); letter-spacing:0.2px;}
@@ -118,12 +119,13 @@
 <header>
   <div class="wrap hrow">
     <div class="brand">
-      <span class="brand-mark"><i class="ti ti-chart-line"></i></span>
+      <span class="brand-mark"><img src="logo.png" alt=""></span>
       <span class="brand-name">Javi<span>Trader</span></span>
     </div>
     <nav>
       <a href="#servicios">Servicios</a>
       <a href="#enfoque">El enfoque</a>
+      <a href="track-record.html">Resultados</a>
       <a href="#faq">Preguntas</a>
     </nav>
     <a class="btn btn-gold nav-cta" href="https://t.me/COMUNIDADJAVITRADER" target="_blank" rel="noopener">Acceso abierto</a>
@@ -270,6 +272,9 @@
         <p>Hablamos de probabilidades y de gestión del riesgo. Sin garantías, sin "x100", sin letra pequeña.</p>
       </div>
     </div>
+    <div style="text-align:center; margin-top:50px;">
+      <a class="btn btn-ghost" href="track-record.html">Ver los resultados en backtest <i class="ti ti-arrow-right"></i></a>
+    </div>
   </section>
 
   <section class="pad" id="faq">
@@ -312,7 +317,7 @@
   <div class="wrap">
     <div class="frow">
       <div class="brand">
-        <span class="brand-mark"><i class="ti ti-chart-line"></i></span>
+        <span class="brand-mark"><img src="logo.png" alt=""></span>
         <span class="brand-name">Javi<span>Trader</span></span>
       </div>
       <div class="social">
@@ -323,6 +328,12 @@
         <a href="https://www.tiktok.com/@javintrader" target="_blank" rel="noopener" aria-label="TikTok"><i class="ti ti-brand-tiktok"></i></a>
         <a href="https://www.threads.com/@javintrader" target="_blank" rel="noopener" aria-label="Threads"><i class="ti ti-brand-threads"></i></a>
       </div>
+    </div>
+    <div style="display:flex; align-items:center; gap:10px; font-size:12.5px; color:var(--txt-dim); padding-bottom:24px; flex-wrap:wrap;">
+      <span style="color:var(--txt-mute);">Brókers para operar las señales:</span>
+      <a href="https://bingxdao.com/partner/JaviTrade" target="_blank" rel="noopener" style="color:var(--gold);">BingX</a>
+      <span style="color:var(--txt-mute);">·</span>
+      <a href="https://www.bitunix.com/register?vipCode=JaviTrader" target="_blank" rel="noopener" style="color:var(--gold);">Bitunix</a>
     </div>
     <p class="disclaimer">© 2026 JaviTrader. JaviTrader ofrece contenido educativo y de análisis de mercado; no constituye asesoramiento financiero ni de inversión. La inversión y el trading en criptoactivos, valores y otros instrumentos financieros conllevan un alto riesgo de pérdida del capital invertido. Las rentabilidades pasadas no garantizan rentabilidades futuras. Opere e invierta únicamente con capital que pueda permitirse perder.</p>
   </div>
