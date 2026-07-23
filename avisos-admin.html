@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Avisos · Envío (JaviTrader)</title>
+<style>
+  :root{ --bg:#0A0A0C; --surface:#131316; --surface-2:#1A1A1E; --gold:#B89357; --gold-bright:#CDA968;
+    --line:rgba(255,255,255,0.08); --line-gold:rgba(184,147,87,0.22); --txt:#ECEAE3; --txt-dim:#9A968C; --txt-mute:#6F6C64; --green:#5f9d78; }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--txt); font-family:system-ui,-apple-system,sans-serif; line-height:1.6; padding:32px 20px;}
+  .wrap{max-width:520px; margin:0 auto;}
+  h1{font-size:22px; font-weight:600; margin-bottom:4px;}
+  h1 span{color:var(--gold);}
+  .sub{font-size:13px; color:var(--txt-mute); margin-bottom:28px;}
+  label{display:block; font-size:12px; letter-spacing:1px; text-transform:uppercase; color:var(--gold); margin:18px 0 7px;}
+  input,select,textarea{width:100%; background:var(--surface); border:1px solid var(--line); border-radius:8px; color:var(--txt); padding:12px 14px; font-size:14px; font-family:inherit;}
+  input:focus,select:focus,textarea:focus{outline:none; border-color:var(--gold);}
+  textarea{resize:vertical; min-height:80px;}
+  .row{display:flex; gap:12px;}
+  .row>div{flex:1;}
+  button{margin-top:24px; width:100%; background:var(--gold); color:#1a1407; border:none; border-radius:8px; padding:14px; font-size:15px; font-weight:600; cursor:pointer;}
+  button:hover{background:var(--gold-bright);}
+  button:disabled{opacity:.5; cursor:not-allowed;}
+  .out{margin-top:18px; font-size:13px; padding:12px 14px; border-radius:8px; white-space:pre-wrap; word-break:break-word; display:none;}
+  .out.ok{display:block; background:rgba(95,157,120,0.12); color:var(--green);}
+  .out.err{display:block; background:rgba(201,139,107,0.12); color:#c98b6b;}
+  .hint{font-size:11.5px; color:var(--txt-mute); margin-top:6px;}
+  .preview{margin-top:14px; background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:12px 14px; font-size:13px; display:none;}
+  .preview.show{display:block;}
+  .preview b{display:block; font-size:14px; margin-bottom:2px;}
+  .preview small{color:var(--txt-mute);}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Avisos · <span>Envío</span></h1>
+  <p class="sub">Panel interno. Envía una notificación push a quienes tengan marcada la categoría elegida.</p>
+
+  <label for="worker">URL del Worker</label>
+  <input id="worker" type="url" value="https://avisos.javitrader.net" placeholder="https://avisos.javitrader.net" autocomplete="off">
+  <p class="hint">Se guarda en este navegador. Rellénalo tras desplegar (F2).</p>
+
+  <label for="token">Token de administración</label>
+  <input id="token" type="password" placeholder="ADMIN_TOKEN" autocomplete="off">
+  <p class="hint">Se guarda solo en este navegador. Nunca se sube a git.</p>
+
+  <label for="topic">Categoría</label>
+  <select id="topic">
+    <option value="novedades">🆕 Novedades de la web</option>
+    <option value="comunidad">📢 Avisos de la comunidad</option>
+    <option value="macro">📊 Macro y datos económicos</option>
+    <option value="formacion">🎓 Formación</option>
+  </select>
+
+  <label for="title">Título</label>
+  <input id="title" type="text" maxlength="80" placeholder="Ej.: Nuevo dato de inflación en EE. UU.">
+
+  <label for="body">Texto</label>
+  <textarea id="body" maxlength="240" placeholder="Una frase clara y sin hype. Máx. 240 caracteres."></textarea>
+
+  <label for="url">Enlace al pulsar (opcional)</label>
+  <input id="url" type="url" placeholder="https://javitrader.net/">
+
+  <div class="preview" id="preview"></div>
+
+  <button id="send">Enviar aviso</button>
+  <div class="out" id="out"></div>
+</div>
+
+<script>
+  var $ = function(id){ return document.getElementById(id); };
+  // Restaurar worker/token guardados
+  $('worker').value = localStorage.getItem('jt_admin_worker') || '';
+  $('token').value  = localStorage.getItem('jt_admin_token')  || '';
+
+  function updatePreview(){
+    var t = $('title').value.trim(), b = $('body').value.trim();
+    var p = $('preview');
+    if(!t && !b){ p.classList.remove('show'); return; }
+    p.classList.add('show');
+    p.innerHTML = '<b>'+ (t||'(sin título)') +'</b>'+ (b? b : '') +'<br><small>javitrader.net</small>';
+  }
+  $('title').addEventListener('input', updatePreview);
+  $('body').addEventListener('input', updatePreview);
+
+  $('send').addEventListener('click', async function(){
+    var out = $('out');
+    var worker = $('worker').value.trim().replace(/\/$/,'');
+    var token  = $('token').value.trim();
+    var payload = {
+      topic: $('topic').value,
+      title: $('title').value.trim(),
+      body:  $('body').value.trim(),
+      url:   $('url').value.trim() || undefined
+    };
+    if(!worker || !token){ show('Falta la URL del Worker o el token.', 'err'); return; }
+    if(!payload.title || !payload.body){ show('Falta título o texto.', 'err'); return; }
+
+    localStorage.setItem('jt_admin_worker', worker);
+    localStorage.setItem('jt_admin_token', token);
+
+    $('send').disabled = true;
+    show('Enviando…', 'ok');
+    try{
+      var r = await fetch(worker + '/send', {
+        method:'POST',
+        headers:{ 'Content-Type':'application/json', 'Authorization':'Bearer '+token },
+        body: JSON.stringify(payload)
+      });
+      var data = await r.json();
+      if(r.ok){ show('Enviado ✓\n'+ JSON.stringify(data, null, 2), 'ok'); }
+      else { show('Error '+r.status+':\n'+ JSON.stringify(data, null, 2), 'err'); }
+    }catch(e){ show('Fallo de red: '+ e.message, 'err'); }
+    finally{ $('send').disabled = false; }
+  });
+
+  function show(msg, kind){
+    var out = $('out');
+    out.textContent = msg;
+    out.className = 'out ' + kind;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+name = "javitrader-avisos"
+main = "src/index.js"
+compatibility_date = "2024-11-01"
+workers_dev = false
+
+# Dominio propio para el Worker (la zona javitrader.net ya está en Cloudflare).
+# Wrangler crea el registro DNS + certificado automáticamente.
+[[routes]]
+pattern = "avisos.javitrader.net"
+custom_domain = true
+
+# Almacén de suscripciones (crear con: wrangler kv namespace create SUBS)
+# y pegar aquí el id que devuelve.
+[[kv_namespaces]]
+binding = "SUBS"
+id = "ade7e18e2c9e40d5930231683ce019f3"
+
+[vars]
+# Correo de contacto VAPID (obligatorio por el estándar). Público, sin problema.
+VAPID_SUBJECT = "mailto:trader220600@gmail.com"
+# Orígenes permitidos para CORS (coma-separados). Añadir localhost para pruebas.
+ALLOWED_ORIGINS = "https://javitrader.net,https://www.javitrader.net"
+
+# Secretos (NO van aquí — se cargan con `wrangler secret put`):
+#   VAPID_PUBLIC_KEY   -> clave pública VAPID (la misma que en avisos.js)
+#   VAPID_PRIVATE_KEY  -> clave privada VAPID (d, base64url). NUNCA en git.
+#   ADMIN_TOKEN        -> token para autorizar el envío desde la página admin
