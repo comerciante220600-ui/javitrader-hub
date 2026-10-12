@@ -60,7 +60,7 @@ javitrader-hub/
 ### Enlaces cableados (revisar si cambian)
 
 - Comunidad: `t.me/COMUNIDADJAVITRADER` · Bot señales: `t.me/javitrader_senales_bot`
-- Afiliados: `bingxdao.com/partner/JaviTrade` · `bitunix.com/register?vipCode=JaviTrader`
+- Afiliados: `bingxdao.com/partner/JaviTrade` · `bitunix.com/register?vipCode=Javintrader`
 - RRSS: `@javintrader` (IG/X/TikTok/Threads) · YouTube `@javitraderr`
 - App/login: `app.javitrader.net`
 
